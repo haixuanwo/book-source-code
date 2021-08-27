@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdlib.h>
 
 #define MAX_LEN 1024
 
@@ -20,11 +21,17 @@ int main(int argc, char *argv[])
     time_t ticks;
     int ret = -1;
 
+    if (argc < 2)
+    {
+        printf("please input port\n");
+        return -1;
+    }
+
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(8888);
+    servaddr.sin_port = htons(atoi(argv[1]));
 
     ret = bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
     if (ret < 0)
