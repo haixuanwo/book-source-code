@@ -8,10 +8,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "file.h"
+// #include "file.h"
+#include "fopen.h"
 
 #define MAX_LEN 1024
 
+#if 0
 static void test()
 {
     int fd = -1;
@@ -45,10 +47,26 @@ static void test()
     printf("read len[%d]:%s\n", len, read_buf);
 }
 
-int main()
+#endif
+
+static void test1()
 {
-    test();
-    return 0;
+    char read_buf[1024] = {0};
+    char buf[] = {"tan heng"};
+    std::string fileName = "test.txt";
+    File f(fileName);
+
+    f.file_write(buf, sizeof(buf));
+    f.file_seek(0, SEEK_SET);
+    f.file_read(read_buf, sizeof(read_buf) - 1);
+
+    printf("[%s]\n", read_buf);
 }
 
+int main()
+{
+    // test();
+    test1();
+    return 0;
+}
 
