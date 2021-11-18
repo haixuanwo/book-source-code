@@ -1,15 +1,18 @@
-/**
- * @author clark
- * @email haixuanwo_clark@hotmail.com
- * @date 2021-08-20
+/*
+ * @Author: Clark
+ * @Email: haixuanwoTxh@gmail.com
+ * @Date: 2021-10-24 17:04:54
+ * @LastEditors: Clark
+ * @LastEditTime: 2021-11-18 18:44:32
+ * @Description: file content
  */
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-// #include "file.h"
-#include "fopen.h"
+ #include "file.h"
+// #include "fopen.h"
 
 #define MAX_LEN 1024
 
@@ -56,9 +59,10 @@ static void test1()
     std::string fileName = "test.txt";
     File f(fileName);
 
-    f.file_write(buf, sizeof(buf));
-    f.file_seek(0, SEEK_SET);
-    f.file_read(read_buf, sizeof(read_buf) - 1);
+    f.file_writen(buf, sizeof(buf));
+    // f.file_seek(0, SEEK_SET);
+    f.file_lseek(0, SEEK_SET);
+    f.file_readn(read_buf, sizeof(read_buf) - 1);
 
     printf("[%s]\n", read_buf);
 }
