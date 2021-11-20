@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-20 15:56:43
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-20 17:49:46
+ * @LastEditTime: 2021-11-20 18:27:03
  * @Description: poll
  */
 
@@ -68,13 +68,15 @@ public:
     /**
      * @brief 设置为非阻塞
      * @param fd scoket fd
-     * @return int
+     * @return true
      */
-    bool setnoblock(int fd)
+    bool setNonblock(int fd)
     {
-        int oldopt = fcntl(fd, F_GETFL);
-        int newopt = oldopt | O_NONBLOCK;
-        fcntl(fd, F_SETFL, newopt);
+        int mode = 0;
+        mode = fcntl(fd, F_GETFL);
+        mode |= O_NONBLOCK;
+        fcntl(fd, F_SETFL, mode);
+
         return true;
     }
 
@@ -164,7 +166,7 @@ public:
                     }
                     printf("get connection %d from %s:%d\n", conn, inet_ntoa(client.sin_addr), client.sin_port);
                     conncount++;
-                    setnoblock(conn);
+                    setNonblock(conn);
                     fds[conncount].fd = conn;
                     fds[conncount].events = POLLIN | POLLRDHUP | POLLERR;
                     fds[conncount].revents = 0;
