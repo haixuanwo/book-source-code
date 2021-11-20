@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-20 10:20:56
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-20 14:37:47
+ * @LastEditTime: 2021-11-20 17:51:24
  * @Description: 使用select实现socket类
  */
 
@@ -17,8 +17,8 @@
  * 3.设置timeval里时间均为0，检查描述字后立即返回，轮询
  */
 
-#ifndef TCP_SERVER_H
-#define TCP_SERVER_H
+#ifndef TCP_SERVER_SELECT_H
+#define TCP_SERVER_SELECT_H
 
 extern "C" {
 #include <sys/select.h>
@@ -111,7 +111,7 @@ public:
             timeVal.tv_sec = 3;
             timeVal.tv_usec = 0;
 
-            readyCount = select(maxFd+1, &readySet, NULL, NULL, &timeVal);
+            readyCount = select(maxFd+1, &readySet, nullptr, nullptr, &timeVal);
             if (readyCount < 0)
             {
                 perror("select error");
@@ -193,13 +193,10 @@ private:
         if (readyCount <= 0)
            return false;
 
-        for (int socketFd : client)
+        for (auto socketFd : client)
         {
             if (FD_ISSET(socketFd, &readySet))
 			{
-                if (readyCount <= 0)
-                    break;
-
                 readyCount--;
                 // 进行读数据 不用阻塞立即读取（select已经帮忙处理阻塞环节）
                 readLen = read(socketFd, buf, MAX_LINE);
@@ -214,6 +211,9 @@ private:
                 printf("readLen[%d]\n", readLen);
                 write(socketFd, buf, readLen);
             }
+
+            if (readyCount <= 0)
+                 break;
         }
         return true;
     }
