@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-20 17:54:17
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-20 18:42:26
+ * @LastEditTime: 2021-11-26 20:05:09
  * @Description: file content
  */
 
@@ -30,6 +30,7 @@ extern "C" {
 }
 
 #define MAX_EVENTS 100
+#define CLIENT_SIZE 100
 
 /**
  * @brief epoll 实现tcp server
@@ -171,14 +172,14 @@ public:
                     // 发生了错误或socket被对方关闭。
                     if (isize <=0)
                     {
-                        printf("client(eventfd=%d) disconnected.\n",events[ii].data.fd);
+                        printf("client(eventfd=%d) disconnected.\n",events[i].data.fd);
 
                         // 把已断开的客户端从epoll中删除。
                         memset(&epollEvent,0,sizeof(struct epoll_event));
                         epollEvent.events = EPOLLIN;
-                        epollEvent.data.fd = events[ii].data.fd;
-                        epoll_ctl(epollFd, EPOLL_CTL_DEL, events[ii].data.fd, &epollEvent);
-                        close(events[ii].data.fd);
+                        epollEvent.data.fd = events[i].data.fd;
+                        epoll_ctl(epollFd, EPOLL_CTL_DEL, events[i].data.fd, &epollEvent);
+                        close(events[i].data.fd);
                         continue;
                     }
 
