@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-12-15 10:35:40
  * @LastEditors: Clark
- * @LastEditTime: 2021-12-15 11:05:36
+ * @LastEditTime: 2021-12-15 12:10:43
  * @Description: file content
  */
 
@@ -26,7 +26,13 @@ int str_cli(FILE* fp, int sockfd)
 
     while (fgets(sendLine, 1024, fp) != nullptr)
     {
-        write(sockfd, sendLine, strlen(sendLine));
+        write(sockfd, sendLine, 1);
+        sleep(1);   // 若服务器异常断开，第一次write引发RST，第二次产生SIGPIPE
+
+        write(sockfd, sendLine + 1, strlen(sendLine) - 1);
+
+        sleep(1);
+        bzero(recvLine, sizeof(recvLine));
         if (read(sockfd, recvLine, 1024) <= 0)
         {
             printf("read error\n");

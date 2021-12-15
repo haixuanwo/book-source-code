@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-12-15 10:35:23
  * @LastEditors: Clark
- * @LastEditTime: 2021-12-15 10:53:55
+ * @LastEditTime: 2021-12-15 12:12:05
  * @Description: file content
  */
 #include <sys/types.h>
@@ -16,7 +16,64 @@
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
-#include <sys/types.h>
+#include <signal.h>
+#include <sys/wait.h>
+
+typedef void Sigfunc(int);
+
+/**
+ * @brief 信号注册函数
+ * @param signo 信号序号
+ * @param func  触发信号回调函数
+ * @return Sigfunc*
+ */
+Sigfunc *Signal(int signo, Sigfunc *func)
+{
+    struct sigaction act, oact;
+    act.sa_handler = func;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+
+    if (signo == SIGALRM)
+    {
+#ifdef SA_INTERRUPT
+        act.sa_flags |= SA_INTERRUPT; // SunOS 4.x
+#endif
+    }
+    else
+    {
+ #ifdef SA_RESTART
+        act.sa_flags |= SA_RESTART; // SunOS 4.x
+#endif
+    }
+
+    if (sigaction(signo, &act, &oact) < 0)
+        return SIG_ERR;
+
+    return oact.sa_handler;
+}
+
+void sig_chld_wait(int signo)
+{
+    pid_t pid;
+    int stat;
+
+    pid = wait(&stat);
+    printf("child %d terminated\n", pid);
+
+    return;
+}
+
+void sig_chld_waitpid(int signo)
+{
+    pid_t pid;
+    int stat;
+
+    while ((pid = waitpid(-1, &stat, WNOHANG)) > 0)
+        printf("child %d terminated\n", pid);
+
+    return;
+}
 
 int str_echo(int sockfd)
 {
@@ -65,6 +122,9 @@ int main(int argc, char *argv[])
     }
 
     result = listen(listenfd, 10);
+
+    Signal(SIGCHLD, sig_chld_wait);
+
     while(1)
     {
         sockLen = sizeof(cliaddr);
