@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-19 17:17:13
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-19 17:20:18
+ * @LastEditTime: 2022-08-21 11:34:15
  * @Description: file content
  */
 
@@ -32,12 +32,17 @@ int main()
         return -1;
     }
 
-    if(sharedMemory.read_data((char *)&data, sizeof(data), sizeof(data)))
-        printf("read success\n");
-    else
-        printf("read fail\n");
+    while (1)
+    {
+        sleep(1);
+        if(false == sharedMemory.read_data((char *)&data, sizeof(data), sizeof(data)))
+        {
+            printf("read fail\n");
+            continue;
+        }
 
-    printf("writen[%u] data[%u]\n", data.written, data.data);
+        printf("writen[%u] data[%u]\n", data.written, data.data);
+    }
 
     pause();
 

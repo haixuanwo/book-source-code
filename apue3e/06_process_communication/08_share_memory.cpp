@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-19 16:30:27
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-19 17:16:34
+ * @LastEditTime: 2022-08-21 11:32:03
  * @Description: 共享内存
  */
 
@@ -44,10 +44,16 @@ int main()
     data.written = 120;
     data.data = 119;
 
-    if(sharedMemory.write_data((char *)&data, sizeof(data)))
-        printf("write success\n");
-    else
-        printf("write fail\n");
+    while (1)
+    {
+        if(false == sharedMemory.write_data((char *)&data, sizeof(data)))
+        {
+            msleep(100);
+            printf("write fail\n");
+        }
+    }
+
+
 
     pause();
 }

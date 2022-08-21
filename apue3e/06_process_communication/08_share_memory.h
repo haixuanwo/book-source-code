@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-19 16:50:49
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-19 17:40:02
+ * @LastEditTime: 2022-08-21 11:23:46
  * @Description: 共享内存
  */
 
@@ -16,6 +16,10 @@ extern "C"{
 #include <sys/shm.h>
 }
 
+#include "06_semaphore.h"
+#include <memory>
+using namespace std;
+
 class SharedMemory
 {
 public:
@@ -25,10 +29,18 @@ public:
         shm = nullptr;
         this->key = key;
         this->size = size;
+        // string semaphoreFile = "/tmp/.txh";
+        string semaphoreFile = to_string(key);
+        semaphore = make_shared<Semaphore>(semaphoreFile);
     }
 
     bool init()
     {
+        if (false == semaphore->init(1))
+        {
+            return false;
+        }
+
         shmId = shmget(key, size, 0666|IPC_CREAT);
         if (shmId < 0)
         {
@@ -61,7 +73,9 @@ public:
             return false;
         }
 
+        semaphore->wait();
         memcpy(shm, dataBuf, dataLen);
+        semaphore->post();
         return true;
     }
 
@@ -79,7 +93,9 @@ public:
             return false;
         }
 
+        semaphore->wait();
         memcpy(dataBuf, shm, readLen);
+        semaphore->post();
         return true;
     }
 
@@ -100,6 +116,7 @@ private:
 
     key_t key;
     size_t size;    // 共享空间大小
+    shared_ptr<Semaphore> semaphore;    // 信号量实现进程间互斥访问
 };
 
 #endif

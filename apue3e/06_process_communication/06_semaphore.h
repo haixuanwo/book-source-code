@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2021-11-19 17:25:49
  * @LastEditors: Clark
- * @LastEditTime: 2021-11-19 18:04:46
+ * @LastEditTime: 2022-08-21 11:20:18
  * @Description: 信号量
  */
 
@@ -65,13 +65,14 @@ public:
 	bool init(unsigned int sema_num)
 	{
 		std::cout<<name;
-		sem = sem_open(name.c_str(), O_CREAT|O_RDWR, 0666, sema_num);
+		// sem = sem_open(name.c_str(), O_CREAT, 0X666, sema_num);
+		sem = sem_open(name.c_str(), O_CREAT, 0X666, 1);
 		if(sem == SEM_FAILED)
 		{
 			std::cerr << "failed to open mutex sem,error:" << strerror(errno) << std::endl;
 			return false;
 		}
-
+        sem_unlink(name.c_str());
 		return true;
 	}
 
