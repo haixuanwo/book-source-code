@@ -1,0 +1,27 @@
+
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+project(recipe-01 LANGUAGES CXX)
+
+include_directories(../)
+
+add_executable(01_absInt 01_absInt.cc)
+add_executable(02_accum 02_accum.cc)
+add_executable(03_accum4 03_accum4.cc)
+add_executable(04_avg_price 04_avg_price.cc)
+add_executable(05_bind2 05_bind2.cc)
+add_executable(06_elimDups 06_elimDups.cc)
+add_executable(07_equal 07_equal.cc)
+add_executable(08_equiv_istream_iter 08_equiv_istream_iter.cc)
+add_executable(09_inserts 09_inserts.cc)
+add_executable(10_iostream_iter 10_iostream_iter.cc)
+add_executable(11_lambda 11_lambda.cc)
+add_executable(12_newcount_size 12_newcount_size.cc)
+add_executable(13_ostreamIter2 13_ostreamIter2.cc)
+add_executable(14_rcomma 14_rcomma.cc)
+add_executable(15_rev_iters 15_rev_iters.cc)
+add_executable(16_reverse_iter 16_reverse_iter.cc)
+add_executable(17_reverse 17_reverse.cc)
+add_executable(18_sortSI 18_sortSI.cc)
+add_executable(19_use_find 19_use_find.cc)
+add_executable(20_use_istream_iter 20_use_istream_iter.cc)
