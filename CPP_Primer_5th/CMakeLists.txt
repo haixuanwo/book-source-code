@@ -42,4 +42,10 @@ INCLUDE_DIRECTORIES(
 # add_subdirectory(11_associative_container)
 # add_subdirectory(12_dynamic_memory)
 # add_subdirectory(13_copy_control)
-add_subdirectory(14_overload_typeConversion)
+# add_subdirectory(14_overload_typeConversion)
+# add_subdirectory(15_object_oriented_programming)
+# add_subdirectory(16_templates_generic_programming)
+# add_subdirectory(17_standard_library_special_facilities)
+# add_subdirectory(18_tool_for_large_program)
+add_subdirectory(19_special_tool_and_tech)
+

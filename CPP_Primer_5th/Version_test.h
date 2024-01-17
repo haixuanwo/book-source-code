@@ -2,6 +2,8 @@
 #ifndef VERSION_TEST_H
 #define VERSION_TEST_H
 
+#define REGEX
+
 #if __cplusplus == 201103L
 #endif
 

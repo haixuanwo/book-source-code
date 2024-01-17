@@ -1,0 +1,27 @@
+
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+project(recipe-01 LANGUAGES CXX)
+
+include_directories(../)
+
+add_executable(01_array-parms4 01_array-parms4.cc)
+add_executable(02_Array 02_Array.cc)
+add_executable(03_compare 03_compare.cc)
+add_executable(04_compareDef 04_compareDef.cc ../Sales_data.cc)
+add_executable(05_compareSpec 05_compareSpec.cc)
+add_executable(06_debug 06_debug.cc)
+add_executable(07_expansion 07_expansion.cc)
+add_executable(08_flip 08_flip.cc)
+# add_executable(09_multiset 09_multiset.cc ../Sales_data.cc)
+add_executable(10_overSpec 10_overSpec.cc)
+add_executable(11_qm 11_qm.cc build.cc)
+add_executable(12_SP 12_SP.cc)
+add_executable(13_special 13_special.cc)
+add_executable(14_trail-ret 14_trail-ret.cc)
+add_executable(15_typealias 15_typealias.cc)
+add_executable(16_useBlob 16_useBlob.cc)
+add_executable(17_useChcking 17_useChcking.cc)
+# add_executable(18_variadic 18_variadic.cc ../Sales_data.cc)
+add_executable(19_variadic3 19_variadic3.cc ../Sales_data.cc)
+add_executable(20_Vecmain 20_Vecmain.cc)
