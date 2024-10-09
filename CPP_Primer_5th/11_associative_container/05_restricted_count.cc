@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2023-12-18 12:41:46
  * @LastEditors: Clark
- * @LastEditTime: 2023-12-18 12:46:40
+ * @LastEditTime: 2024-10-09 10:06:38
  * @Description: file content
  */
 
@@ -30,7 +30,7 @@ int main()
     string word;
     while (cin >> word)
     {
-        if (exclude.find(word) == exclude.end())
+        if (exclude.find(word) != exclude.end())
         {
             ++word_count[word];
         }

@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2023-12-18 11:21:17
  * @LastEditors: Clark
- * @LastEditTime: 2023-12-18 11:26:49
+ * @LastEditTime: 2024-10-09 09:50:40
  * @Description: file content
  */
 
@@ -19,14 +19,24 @@ using std::pair;
 #include <iostream>
 using std::cout; using std::endl;
 
+void show_multimap(const std::multimap<string, string> &m)
+{
+    cout << "Size of map: " << m.size() << endl;
+
+    for (const auto &pair : m)
+    {
+        cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+    }
+}
+
 int main()
 {
     multimap<string, string> authors;
     authors.insert({"Alain de Botton", "On Love"});
     authors.insert({"Alain de Botton", "Status Anxiety"});
     authors.insert({"Alain de Botton", "Art of Travel"});
-    authors.insert({"Alain de Botton",
-		                      "Architecture of Happiness"});
+    authors.insert({"Alain de Botton", "Architecture of Happiness"});
+    show_multimap(authors);
 
     string search_item("Alain de Botton"); // author we'll look for
     auto entries = authors.count(search_item); // number of elements

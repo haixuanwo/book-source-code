@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2023-12-18 11:58:19
  * @LastEditors: Clark
- * @LastEditTime: 2023-12-18 12:39:35
+ * @LastEditTime: 2024-10-09 09:57:49
  * @Description: file content
  */
 
@@ -84,14 +84,26 @@ pair<string, int> process3(vector<string> &v)
 		return pair<string, int>();
 }
 
+void show_vector(const vector<string> &v)
+{
+    cout << "Size of map: " << v.size() << endl;
+
+    for (const auto &item : v)
+    {
+        cout << "item: " << item << endl;
+    }
+}
+
 int main()
 {
 	vector<string> v;
 	string s;
 	while (cin >> s)
 		v.push_back(s);
+    show_vector(v);
 
 	preliminaries(v);  // sort v into size order
+    show_vector(v);
 
 	// all three output statements should be the same
 	auto biggest = process(v);

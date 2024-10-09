@@ -3,7 +3,7 @@
  * @Email: haixuanwoTxh@gmail.com
  * @Date: 2023-12-18 09:23:12
  * @LastEditors: Clark
- * @LastEditTime: 2023-12-18 10:42:01
+ * @LastEditTime: 2024-10-09 09:47:49
  * @Description: file content
  */
 
@@ -35,6 +35,16 @@ multiset<Sales_data, SDComp> bookstore2([](const Sales_data &l, const Sales_data
     return l.isbn() < r.isbn();
 });
 
+void show_map(const std::map<string, size_t> &m)
+{
+    cout << "Size of map: " << m.size() << endl;
+
+    for (const auto &pair : m)
+    {
+        cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+    }
+}
+
 int main()
 {
     map<string, size_t> word_count;
@@ -49,9 +59,11 @@ int main()
     word_count.insert(make_pair(word, 1));
     word_count.insert(pair<string, size_t>(word, 1));
     word_count.insert(map<string, size_t>::value_type(word, 1));
+    show_map(word_count);
 
     typedef map<string, size_t>::value_type valType;
     word_count.insert(valType(word, 1));
+    show_map(word_count);
 
     pair<map<string, size_t>::iterator, bool> insert_ret;
     insert_ret = word_count.insert({"Anna", 1});
@@ -63,8 +75,9 @@ int main()
 
     auto map_it = word_count.begin();
     cout << map_it->first;
-    cout << " " << map_it->second;
+    cout << " " << map_it->second << endl;
     ++map_it->second;
+    show_map(word_count);
 
     return 0;
 }
