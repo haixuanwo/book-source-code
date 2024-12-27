@@ -1,0 +1,111 @@
+#include <queue>
+#include <mutex>
+#include <memory>
+#include <thread>
+#include <iostream>
+#include <condition_variable>
+
+template<typename T>
+class threadsafe_queue
+{
+private:
+    mutable std::mutex mut;
+    std::queue<std::shared_ptr<T> > data_queue;
+    std::condition_variable data_cond;
+
+public:
+    threadsafe_queue()
+    {}
+
+    void wait_and_pop(T& value)
+    {
+        std::unique_lock<std::mutex> lk(mut);
+        data_cond.wait(lk,[this]{return !data_queue.empty();});
+        value=std::move(*data_queue.front());
+        data_queue.pop();
+    }
+
+    bool try_pop(T& value)
+    {
+        std::lock_guard<std::mutex> lk(mut);
+        if(data_queue.empty())
+            return false;
+        value=std::move(*data_queue.front());
+        data_queue.pop();
+    }
+
+    std::shared_ptr<T> wait_and_pop()
+    {
+        std::unique_lock<std::mutex> lk(mut);
+        data_cond.wait(lk,[this]{return !data_queue.empty();});
+        std::shared_ptr<T> res=data_queue.front();
+        data_queue.pop();
+        return res;
+    }
+
+    std::shared_ptr<T> try_pop()
+    {
+        std::lock_guard<std::mutex> lk(mut);
+        if(data_queue.empty())
+            return std::shared_ptr<T>();
+        std::shared_ptr<T> res=data_queue.front();
+        data_queue.pop();
+        return res;
+    }
+
+    bool empty() const
+    {
+        std::lock_guard<std::mutex> lk(mut);
+        return data_queue.empty();
+    }
+
+    void push(T new_value)
+    {
+        std::shared_ptr<T> data(
+            std::make_shared<T>(std::move(new_value)));
+        std::lock_guard<std::mutex> lk(mut);
+        data_queue.push(data);
+        data_cond.notify_one();
+    }
+
+};
+
+void consumer(void *param)
+{
+  auto rq = static_cast<threadsafe_queue<int>*>(param);
+
+  while(1)
+  {
+    int value = 0;
+    rq->wait_and_pop(value);
+    std::cout << "value: " << value << std::endl;
+
+    // auto value = rq->wait_and_pop();
+    // std::cout << "value: " << *value << std::endl;
+  }
+}
+
+void producer(void *param)
+{
+  auto rq = static_cast<threadsafe_queue<int>*>(param);
+
+  int count = 0;
+  while(1)
+  {
+    count++;
+    rq->push(count);
+    std::cout << __func__ << " count: " << count << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  }
+}
+
+int main()
+{
+  threadsafe_queue<int> rq;
+  std::thread consummerThread(consumer, &rq);
+  std::thread producerThread(producer, &rq);
+
+  consummerThread.join();
+  producerThread.join();
+  return 0;
+}
